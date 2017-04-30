@@ -3,7 +3,7 @@
 //tener en cuenta que estan usando una version mas alta de node para utilizar algunas cosas
 const express = require('express')
 const api = express.Router()
-const productCtrl = require('./controllers/product')
+const productCtrl = require('../controllers/product')
 
 //tener en cuenta ese router
 api.get('/product', productCtrl.getProducts)
