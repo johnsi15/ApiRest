@@ -1,23 +1,25 @@
 'use strict'
 
-const jwt = require('jwt');
-const moment = require('moment');
-const config = require('../config');
+const services = require('../services');
 
 function isAuth(req, res, next){
+  // Validamos que dentro del headers venga el token,
+  // Si lo tiene nos da true y lo invertimos con ! para que de false
   if(!req.headers.authorization){
     return res.status(403).send({ message: 'No tienes autorización' });
   }
 
-  const token = req.header.authorization.split(" ")[1];
-  const payload = jwt.decode(token, config.JWT);
+  // Desglosamos el parametro o valor authorization que viene un (pre token)  
+  const token = req.header.authorization.split(" ")[1];// Con split separamos en un array
 
-  if(payload.exp <= moment().unix()){
-    return res.status(401).send({ message: 'El token ha expirado' });
-  }
-
-  req.user = payload.sub;
-  next();
+  services.decodeToken(token)
+    .then(response => {
+      req.user = response
+      next()
+    })
+    .catch(response =>{
+      res.status(response.status)
+    })  
 }
 
 module.exports = isAuth;

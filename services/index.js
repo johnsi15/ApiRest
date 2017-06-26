@@ -17,4 +17,32 @@ function createToken(user){
   return jwt.encode(payload, config.SECRET_TOKEN);
 }
 
-module.exports = createToken;
+function decodeToken(token){
+  // Las Promise se usan apartir de ES6 o ES2015 que es lo mismo
+  const decoded = new Promise((resolve, reject) => {
+    try{
+      const payload = jwt.decode(token, config.SECRET_TOKEN);
+
+      if(payload.exp <= moment().unix()){
+        reject({
+          status: 401,
+          message: 'El token ha expirado'
+        })
+      }
+
+      resolve(payload.sub)
+    } catch (err){
+      reject({
+        status: 500,
+        message: 'Invalid token'
+      })
+    }
+  });
+
+  return decoded;
+}
+
+module.exports = {
+  createToken,
+  decodeToken
+}
