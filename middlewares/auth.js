@@ -10,7 +10,7 @@ function isAuth(req, res, next){
   }
 
   // Desglosamos el parametro o valor authorization que viene un (pre token)  
-  const token = req.header.authorization.split(" ")[1];// Con split separamos en un array
+  const token = req.headers.authorization.split(' ')[1];// Con split separamos en un array
 
   services.decodeToken(token)
     .then(response => {

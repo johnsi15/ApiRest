@@ -9,7 +9,8 @@ const UserSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
   displayName: String,
   avatar: String,
-  password: { type: String, select: false },
+  password: { type: String, required: true },
+  // password: { type: String, select: false },
   signupDate: { type: Date, default: Date.now() },
   lastLogin: Date
 });
@@ -17,7 +18,8 @@ const UserSchema = new Schema({
 UserSchema.pre('save', (next) => {
   let user = this
 
-  if(!user.isModified('password')) return next()
+  // Verificar porque no funciona esta linea de código.
+  //if(!user.isModified('password')) return next()
 
   bcrypt.genSalt(10, (err, salt) => {
     if(err) return next(err)

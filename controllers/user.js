@@ -8,13 +8,14 @@ const service = require('../services');
 function signUp(req, res){
   const user = new User({
     email: req.body.email,
-    displayName: req.body.displayName
+    displayName: req.body.displayName,
+    password: req.body.password
   });
 
-  user.save((err) =>{
+  user.save((err) => {
     if(err) res.status(500).send({ message: 'Error al crear el usuario: '+ err});
 
-    return res.status(200).send({ token: service.createTokken(user) });
+    return res.status(200).send({ token: service.createToken(user) });
   });
 }
 
@@ -27,7 +28,7 @@ function signIn(req, res){
     req.user = user;
     res.status(200).send({
       message: 'Te has logeado correctamente',
-      token: service.createTokken(user)
+      token: service.createToken(user)
     });
   });
 }
