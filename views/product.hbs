@@ -1,0 +1,28 @@
+<script>
+  // Esto lo hacemos con vainilla js revisar.
+  let productList = document.createElement('ul');
+
+  // Indicamos que vamos a usar el headers y lo que vamos a mandar
+  const myHeaders = new Headers();
+  // Entonces endicamos que al headers authorization le vamos agregar el token, 
+  // Por defecto se envia authorization: Barer por eso lo hacemos de esa forma con el Barer
+  myHeaders.append('authorization', 'Barer '+localStorage.token);
+
+  // fetch es la nueva forma de ES6
+  fetch('/api/product', {
+    methos: 'GET',
+    headers: myHeaders
+  })
+  .then(res => res.json())
+  .then(data => {
+    // console.log(data);
+    data.products.map(product => {
+      let text = document.createTextNode(product.name);
+      let elem = document.createElement('li');
+      elem.appendChild(text);// Agregamos el text como hijo del li
+      productList.appendChild(elem);// Agregamos el li como hijo del ul
+    })
+
+    document.body.appendChild(productList);
+  })
+</script>

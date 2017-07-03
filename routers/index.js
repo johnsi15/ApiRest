@@ -8,11 +8,11 @@ const productCtrl = require('../controllers/product');
 const userCtrl = require('../controllers/user');
 
 //tener en cuenta ese router
-api.get('/product', productCtrl.getProducts);
-api.get('/product/:productId', productCtrl.getProduct);
-api.post('/product', productCtrl.saveProduct);
-api.put('/product/:productId', productCtrl.updateProduct);
-api.delete('/product/:productId', productCtrl.deleteProduct);
+api.get('/product', auth, productCtrl.getProducts);
+api.get('/product/:productId', auth, productCtrl.getProduct);
+api.post('/product', auth, productCtrl.saveProduct);
+api.put('/product/:productId', auth, productCtrl.updateProduct);
+api.delete('/product/:productId', auth, productCtrl.deleteProduct);
 api.post('/signup', userCtrl.signUp);
 api.post('/signin', userCtrl.signIn);
 // Rutas con restrincción del acceso gracias a JWT
