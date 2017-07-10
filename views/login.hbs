@@ -8,10 +8,11 @@
 
 <script>
   const formLogin = document.querySelector('#formLogin');
-  const formData = new FormData(formLogin);
 
   formLogin.addEventListener('submit', event => {
     event.preventDefault();
+    const formData = new FormData(formLogin);
+    // console.log(formData)
     // El metodo fetch envia por defecto methods GET,
     // Tener en cuenta de nodemon hay que que resetearlo para que tome los cambios,
     // De los .hbs handlebars

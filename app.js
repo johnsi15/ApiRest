@@ -28,7 +28,11 @@ app.get('/login', (req, res) => {
 
 app.get('/', (req, res) => {
   res.render('product');
-})
+});
+
+app.get('/save-product', (req, res) => {
+  res.render('saveProduct');
+});
 
 // app.get('/hola', (req, res) =>{
 //  res.send({ message: 'Hola mundo'})
