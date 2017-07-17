@@ -1,6 +1,8 @@
 'use strict'
 
-const Product = require('../models/product')
+const Product = require('../models/product');
+const multer = require('multer');// Multer guardamos los files en una carpeta de mi app
+const ext = require('file-extension');// la necesitamos esta libreria para complementar multer
 
 function getProduct(req, res){
   let productId = req.params.productId
@@ -22,22 +24,26 @@ function getProducts(req, res){
   })
 }
 
-function saveProduct(req, res){
-  console.log('POST /api/product')
-  console.log(req.body)
 
-  let product = new Product()
-  product.name = req.body.name
-  product.picture = req.body.picture
-  product.price = req.body.price
-  product.category = req.body.category
-  product.description = req.body.description
 
-  product.save((err, productStored) => {
-    if(err) res.status(500).send({ message: 'Error al salvar el producto'+ err })
 
-    res.status(200).send({ product: productStored })
-  })
+function saveProduct(req, res, next){
+  console.log('POST /api/product', req.body);
+
+  let product = new Product();
+  // product.name = req.body.name
+  // product.picture = req.body.picture // Esto esta mal al parecer
+  // product.picture = req.file.originalname // probar
+  product.picture = req.file
+  // product.price = req.body.price
+  // product.category = req.body.category
+  // product.description = req.body.description
+
+  // product.save((err, productStored) => {
+  //   if(err) res.status(500).send({ message: 'Error al salvar el producto'+ err })
+
+  //   res.status(200).send({ product: productStored })
+  // }); 
 }
 
 function updateProduct(req, res){

@@ -1,9 +1,9 @@
-<form id="saveProduct" method="post" enctype="multipart/form-data"> <!-- enctype="multipart/form-data"-->
+<form id="saveProduct" method="post" action="/api/post" enctype="multipart/form-data"> <!-- enctype="multipart/form-data"-->
   <label for="name">Nombre:</label>
   <input type="text" name="name">
   <br><br>
   <label for="picture">Imagen:</label>
-  <input type="file" name="picture">
+  <input type="file" name="picture" id="picture">
   <br><br>
   <label for="price">Precio</label>
   <input type="text" name="price">
@@ -39,26 +39,40 @@
   // Entonces endicamos que al headers authorization le vamos agregar el token, 
   // Por defecto se envia authorization: Barer por eso lo hacemos de esa forma con el Barer
   myHeaders.append('authorization', 'Barer '+localStorage.token);
-  myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-
+  // myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+  // myHeaders.append('Content-Type', 'application/json');
+  // myHeaders.append('Content-Type', 'multipart/form-data');
+  // myHeaders.append('Accept', 'application/json');
+  
   saveProduct.addEventListener('submit', event => {
-    event.preventDefault();
-    const formData = 'name='+name.value+'&'+'picture='+picture.value+'&'+'price='+price.value+'&'+'category='+category.value+'&'+'description='+description.value;
-    // const formData = new FormData(saveProduct);
+    // event.preventDefault();
+    // const formData = 'name='+name.value+'&'+'picture='+picture.value+'&'+'price='+price.value+'&'+'category='+category.value+'&'+'description='+description.value;
+    const formData = new FormData(this);
     // console.log(formData)
     // El metodo fetch envia por defecto methods GET,
     // Tener en cuenta de nodemon hay que que resetearlo para que tome los cambios,
     // De los .hbs handlebars
-    fetch('/api/product', {
-      method: 'POST',
-      headers: myHeaders,
-      body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
-      saveProduct.reset();
-    })
+
+    // fetch('/api/post', {
+    //   method: 'POST',
+    //   body: formData
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   console.log('Esto es la data ', data);
+    //   saveProduct.reset();
+    // });
+
+    // fetch('/api/post', {
+    //   method: 'POST',
+    //   headers: myHeaders,
+    //   body: formData
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   console.log('Esto es la data ', data);
+    //   saveProduct.reset();
+    // });
   });
 </script>
 

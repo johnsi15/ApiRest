@@ -17,7 +17,7 @@ api.post('/signup', userCtrl.signUp);
 api.post('/signin', userCtrl.signIn);
 // Rutas con restrincción del acceso gracias a JWT
 api.get('/private', auth, function (req, res){
-	res.status(200).send({ message: 'Tienes acceso' });
+    res.status(200).send({ message: 'Tienes acceso' });
 });
 
 module.exports = api;
