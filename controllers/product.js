@@ -1,6 +1,7 @@
 'use strict'
 
 const Product = require('../models/product');
+
 const multer = require('multer');// Multer guardamos los files en una carpeta de mi app
 const ext = require('file-extension');// la necesitamos esta libreria para complementar multer
 
@@ -24,25 +25,46 @@ function getProducts(req, res){
   })
 }
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + '.' + ext(file.originalname))
+  }
+});
 
-
+var upload = multer({ storage: storage }).single('picture');//el name del type file
 
 function saveProduct(req, res){
   console.log('POST /api/product', req.body);
 
   let product = new Product();
-  product.name = req.body.name
-  /*El file viene dentro del upload de multer */
-  product.picture = req.file.filename
-  product.price = req.body.price
-  product.category = req.body.category
-  product.description = req.body.description
+  product.name = req.body.name;  
+  product.price = req.body.price;
+  product.category = req.body.category;
+  product.description = req.body.description;
+
+  upload(req, res, function(err){
+    // console.log('Esto es file'+ req.file.destination + req.file.filename);
+    if(err){
+      return res.status(500).send({ message: 'Error uploading file' });
+    }
+    res.status(200).send({ file: 'File upload' });
+    // Aquí enviamos el name del file.
+    if(req.file){
+      product.picture = req.file.filename;
+    }else{
+      product.picture = 'default.jpg';
+    }
+
+  });
 
   // product.save((err, productStored) => {
   //   if(err) res.status(500).send({ message: 'Error al salvar el producto'+ err })
 
   //   res.status(200).send({ product: productStored })
-  // }); 
+  // });
 }
 
 function updateProduct(req, res){
@@ -75,5 +97,6 @@ module.exports = {
   saveProduct,
   getProducts,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  upload
 }

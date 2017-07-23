@@ -8,9 +8,6 @@ const hbs = require('express-handlebars');
 const app = express();
 const api = require('./routers');
 
-const multer = require('multer');// Multer guardamos los files en una carpeta de mi app
-const ext = require('file-extension');// la necesitamos esta libreria para complementar multer
-
 //middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -36,34 +33,21 @@ app.get('/save-product', (req, res) => {
   res.render('saveProduct');
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads/')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + '.' + ext(file.originalname))
-  }
-});
+// app.post('/save-product', upload, function (req, res) {
 
-// var upload = multer({ dest: 'uploads/' })
+//   console.log('POST /api/product', req.body);
+//   // req.file is the `avatar` file
+//   // console.log('Esto es el file -> ', req.file)
+//   // console.log('Esto es body -> ', req.body)
 
-var upload = multer({ storage: storage }).single('picture');//el name del type file
-
-app.post('/save-product', upload, function (req, res) {
-
-  console.log('POST /api/product', req.body);
-  // req.file is the `avatar` file
-  // console.log('Esto es el file -> ', req.file)
-  // console.log('Esto es body -> ', req.body)
-
-  upload(req, res, function(err){
-    // console.log('Esto es file'+ req.file.destination + req.file.filename);
-    if(err){
-      return res.status(500).send({ message: 'Error uploading file' });
-    }
-    res.status(200).send({ file: 'File upload' });
-  });
-})
+//   upload(req, res, function(err){
+//     // console.log('Esto es file'+ req.file.destination + req.file.filename);
+//     if(err){
+//       return res.status(500).send({ message: 'Error uploading file' });
+//     }
+//     res.status(200).send({ file: 'File upload' });
+//   });
+// })
 
 // app.get('/hola', (req, res) =>{
 //  res.send({ message: 'Hola mundo'})
