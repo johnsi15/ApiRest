@@ -27,17 +27,16 @@ function getProducts(req, res){
 
 
 
-function saveProduct(req, res, next){
+function saveProduct(req, res){
   console.log('POST /api/product', req.body);
 
   let product = new Product();
-  // product.name = req.body.name
-  // product.picture = req.body.picture // Esto esta mal al parecer
-  // product.picture = req.file.originalname // probar
-  product.picture = req.file
-  // product.price = req.body.price
-  // product.category = req.body.category
-  // product.description = req.body.description
+  product.name = req.body.name
+  /*El file viene dentro del upload de multer */
+  product.picture = req.file.filename
+  product.price = req.body.price
+  product.category = req.body.category
+  product.description = req.body.description
 
   // product.save((err, productStored) => {
   //   if(err) res.status(500).send({ message: 'Error al salvar el producto'+ err })

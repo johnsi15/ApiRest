@@ -49,12 +49,15 @@ const storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single('picture');//el name del type file
 
-app.post('/api/post', function (req, res) {
+app.post('/save-product', upload, function (req, res) {
+
+  console.log('POST /api/product', req.body);
   // req.file is the `avatar` file
-  console.log('Esto es el file -> ', req.file)
-  console.log('Esto es body -> ', req.body)
+  // console.log('Esto es el file -> ', req.file)
+  // console.log('Esto es body -> ', req.body)
 
   upload(req, res, function(err){
+    // console.log('Esto es file'+ req.file.destination + req.file.filename);
     if(err){
       return res.status(500).send({ message: 'Error uploading file' });
     }
