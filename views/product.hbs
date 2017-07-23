@@ -20,7 +20,14 @@
     data.products.map(product => {
       let text = document.createTextNode(product.name);
       let elem = document.createElement('li');
+      let src = product.picture;
+
+      let imagen = document.createElement('img');
+      imagen.src= src;
+
       elem.appendChild(text);// Agregamos el text como hijo del li
+      elem.appendChild(imagen);
+
       productList.appendChild(elem);// Agregamos el li como hijo del ul
     })
 

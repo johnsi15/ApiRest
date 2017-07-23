@@ -40,7 +40,8 @@ function saveProduct(req, res){
   console.log('POST /api/product', req.body);
 
   let product = new Product();
-  product.name = req.body.name;  
+  product.name = req.body.name;
+  product.picture = 'default.jpg';
   product.price = req.body.price;
   product.category = req.body.category;
   product.description = req.body.description;
@@ -50,21 +51,19 @@ function saveProduct(req, res){
     if(err){
       return res.status(500).send({ message: 'Error uploading file' });
     }
-    res.status(200).send({ file: 'File upload' });
+    // res.status(200).send({ file: 'File upload' });
     // Aquí enviamos el name del file.
     if(req.file){
       product.picture = req.file.filename;
-    }else{
-      product.picture = 'default.jpg';
     }
 
+    product.save((err, productStored) => {
+      if(err) res.status(500).send({ message: 'Error al salvar el producto'+ err })
+
+      res.status(200).send({ product: productStored, file: 'File upload' })
+    });
   });
 
-  // product.save((err, productStored) => {
-  //   if(err) res.status(500).send({ message: 'Error al salvar el producto'+ err })
-
-  //   res.status(200).send({ product: productStored })
-  // });
 }
 
 function updateProduct(req, res){

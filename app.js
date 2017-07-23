@@ -21,6 +21,9 @@ app.set('view engine', '.hbs');
 //revisar porque se usa de esta forma use --> api
 app.use('/api', api);
 
+app.use(express.static('public'));// Files css, js etc
+app.use(express.static('uploads'));// Files jpg, png etc
+
 app.get('/login', (req, res) => {
   res.render('login');
 });

@@ -1,11 +1,12 @@
 'use strict'
 
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 
 const ProductSchema = Schema({
   name: String,
-  picture: { type: String, default: 'default.jpg'},
+  picture: { type: String, default: 'default.jpg' },
   price: { type: Number, default: 0 },
   category: { type: String, enum: ['computers', 'phones', 'accesories'] },
   description: String
