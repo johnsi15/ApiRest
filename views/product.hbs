@@ -1,4 +1,5 @@
-<script>
+<script type="text/babel">
+  /*
   // Esto lo hacemos con vanilla js revisar.
   // http://vanilla-js.com/
   let productList = document.createElement('ul');
@@ -32,5 +33,55 @@
     })
 
     document.body.appendChild(productList);
-  })
+  })*/
+
+  // Ejemplo con react 
+
+  const List = () => {
+
+    // Indicamos que vamos a usar el headers y lo que vamos a mandar
+    const myHeaders = new Headers();
+    // Entonces endicamos que al headers authorization le vamos agregar el token, 
+    // Por defecto se envia authorization: Barer por eso lo hacemos de esa forma con el Barer
+    myHeaders.append('authorization', 'Barer '+localStorage.token);
+
+    // fetch es la nueva forma de ES6
+    fetch('/api/product', {
+      methos: 'GET',
+      headers: myHeaders
+    })
+    .then(res => res.json())
+    .then(data => {
+      // console.log(data);
+      const ListaProduct = data.products.map(product => {
+        return (
+          <li>
+            {
+              product.name            
+            }
+            <img src={product.picture} alt={product.picture} />
+          </li>
+        )
+      })
+    })
+
+    return(
+      <<ul>
+        { ListaProduct }
+      </ul>
+    );
+  }
+
+  const Container = () => {
+    return(
+      <div className="lista">
+        <List />
+      </div>
+    )
+  }
+
+  ReactDOM.render(
+    <Container />,
+    document.getElementById('app')
+  )
 </script>
