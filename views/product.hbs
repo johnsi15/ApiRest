@@ -37,47 +37,73 @@
 
   // Ejemplo con react 
 
-  const List = () => {
+  
 
-    // Indicamos que vamos a usar el headers y lo que vamos a mandar
-    const myHeaders = new Headers();
-    // Entonces endicamos que al headers authorization le vamos agregar el token, 
-    // Por defecto se envia authorization: Barer por eso lo hacemos de esa forma con el Barer
-    myHeaders.append('authorization', 'Barer '+localStorage.token);
+  class Products extends React.Component{
 
-    // fetch es la nueva forma de ES6
-    fetch('/api/product', {
-      methos: 'GET',
-      headers: myHeaders
-    })
-    .then(res => res.json())
-    .then(data => {
-      // console.log(data);
-      const ListaProduct = data.products.map(product => {
-        return (
-          <li>
-            {
-              product.name            
-            }
-            <img src={product.picture} alt={product.picture} />
-          </li>
-        )
+    constructor(props){
+      super(props);
+      this.state = { 
+        products: [] 
+      };
+    }
+
+    componentWillMount() {
+      // Indicamos que vamos a usar el headers y lo que vamos a mandar
+      const myHeaders = new Headers();
+      // Entonces endicamos que al headers authorization le vamos agregar el token, 
+      // Por defecto se envia authorization: Barer por eso lo hacemos de esa forma con el Barer
+      myHeaders.append('authorization', 'Barer '+localStorage.token);
+      
+      // fetch es la nueva forma de ES6
+      fetch('/api/product', {
+        methos: 'GET',
+        headers: myHeaders
       })
-    })
+      .then(res => res.json())
+      .then(data => {
+        {{!-- console.log(data); --}}
+        this.setState({ products: data.products })
+      })
+    }
 
-    return(
-      <<ul>
-        { ListaProduct }
+    render() {
+      if (this.state.products.length > 0) {
+        return (
+          <ProductList list={ this.state.products }/>
+        )
+      } else {
+        return <p className="text-center">Cargando productos...</p>
+      }
+    }
+  }
+
+  const ProductList = ({ list }) => {
+    const product =  list.map((product, index) => {
+             return <Product key={ index } name={ product.name } picture={ product.picture }/>
+          });
+    return (
+      <ul>
+        { product }
       </ul>
+    );
+  }
+
+  const Product = ({ name, picture }) => {
+    return (
+      <li>
+        <h2>{ name }</h2>
+        <img src={ picture } alt={ picture } /> 
+      </li>
     );
   }
 
   const Container = () => {
     return(
       <div className="lista">
-        <List />
+        <Products />
       </div>
-    )
+    );
   }
 
   ReactDOM.render(
